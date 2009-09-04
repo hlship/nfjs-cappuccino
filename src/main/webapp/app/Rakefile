@@ -10,7 +10,7 @@ ObjectiveJ::BundleTask.new(:app) do |t|
     t.name          = 'app'
     t.identifier    = 'formos.app'
     t.version       = '1.0'
-    t.author        = 'Formos'
+    t.author        = 'Howard M. Lewis Ship'
     t.email         = 'admin@formos.com'
     t.summary       = 'app'
     t.sources       = FileList['*.j']

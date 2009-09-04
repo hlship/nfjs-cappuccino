@@ -3,7 +3,7 @@
  * app
  *
  * Created by Howard M. Lewis Ship on September 3, 2009.
- * Copyright 2009, Formos All rights reserved.
+ * Copyright 2009, Howard M. Lewis Ship All rights reserved.
  */
 
 @import <Foundation/Foundation.j>
