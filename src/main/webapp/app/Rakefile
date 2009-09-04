@@ -1,0 +1,25 @@
+
+require 'objective-j'
+require 'objective-j/bundletask'
+
+if !ENV['CONFIG']
+    ENV['CONFIG'] = 'Debug'
+end
+
+ObjectiveJ::BundleTask.new(:app) do |t|
+    t.name          = 'app'
+    t.identifier    = 'formos.app'
+    t.version       = '1.0'
+    t.author        = 'Formos'
+    t.email         = 'admin@formos.com'
+    t.summary       = 'app'
+    t.sources       = FileList['*.j']
+    t.resources     = FileList['Resources/*']
+    t.index_file    = 'index.html'
+    t.info_plist    = 'Info.plist'
+    t.build_path    = File.join('Build', ENV['CONFIG'], 'app')
+    t.flag          = '-DDEBUG' if ENV['CONFIG'] == 'Debug'
+    t.flag          = '-O' if ENV['CONFIG'] == 'Release'
+end
+
+task :default => [:app]
