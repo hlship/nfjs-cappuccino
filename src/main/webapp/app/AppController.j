@@ -9,10 +9,12 @@
 @import <Foundation/CPObject.j>
 @import <AppKit/CPButton.j>
 @import "CalcController.j"
+@import "TwitterController.j"
 
 @implementation AppController : CPObject
 {
   CalcController _calcController;
+  TwitterController _twitController;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -21,6 +23,7 @@
       contentView = [window contentView];
       
   [contentView addSubview:[self makeButton:@"Calculator" row:0 action:@selector(raiseCalculatorPanel:)]];    
+  [contentView addSubview:[self makeButton:@"Twitter" row:1 action:@selector(raiseTwitterPanel:)]];    
       
   [window orderFront:self];
 }
@@ -43,6 +46,14 @@
     _calcController = [[CalcController alloc] init];
     
   [_calcController show];
+}
+
+-(void)raiseTwitterPanel:(id)sender
+{
+  if (_twitController == nil)
+    _twitController = [[TwitterController alloc] init];
+    
+  [_twitController show];
 }
 
 @end
