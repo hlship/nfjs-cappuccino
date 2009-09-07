@@ -38,46 +38,46 @@ var
   
     if (self)
     {
-    _panel = [[CPPanel alloc] initWithContentRect:CGRectMake(20, 30, 184, 184)
-                                 styleMask:CPHUDBackgroundWindowMask | CPClosableWindowMask];
+      _panel = [[CPPanel alloc] initWithContentRect:CGRectMake(20, 30, 184, 184)
+                                   styleMask:CPHUDBackgroundWindowMask | CPClosableWindowMask];
       
-    _contentView = [_panel contentView];
+      _contentView = [_panel contentView];
 
-    [_panel setTitle:"Calculator"];
+      [_panel setTitle:"Calculator"];
                                  
 
-    _display = [CPTextField labelWithTitle:""];
-    [_display setAlignment:CPRightTextAlignment];
-    [_display setFrame:CGRectMake(1, 5, 183, 30)]
-    [_display setBezeled:YES];
+      _display = [CPTextField labelWithTitle:""];
+      [_display setAlignment:CPRightTextAlignment];
+      [_display setFrame:CGRectMake(1, 5, 183, 30)]
+      [_display setBezeled:YES];
 
-    [self add:_display];
+      [self add:_display];
   
-    [self makeButton:"C" atX:0 y:0 action:@selector(clear:)];
+      [self makeButton:"C" atX:0 y:0 action:@selector(clear:)];
 
-    [self makeButton:"/" atX:3 y:0 action:@selector(div:)];
-    [self makeButton:"*" atX:3 y:1 action:@selector(mult:)];
-    [self makeButton:"-" atX:3 y:2 action:@selector(minus:)];
-    [self makeButton:"+" atX:3 y:3 action:@selector(plus:)];
+      [self makeButton:"/" atX:3 y:0 action:@selector(div:)];
+      [self makeButton:"*" atX:3 y:1 action:@selector(mult:)];
+      [self makeButton:"-" atX:3 y:2 action:@selector(minus:)];
+      [self makeButton:"+" atX:3 y:3 action:@selector(plus:)];
 
   
-    [self makeDigit:7 atX:0 y:1];
-    [self makeDigit:8 atX:1 y:1];
-    [self makeDigit:9 atX:2 y:1];
+      [self makeDigit:7 atX:0 y:1];
+      [self makeDigit:8 atX:1 y:1];
+      [self makeDigit:9 atX:2 y:1];
 
-    [self makeDigit:4 atX:0 y:2];
-    [self makeDigit:5 atX:1 y:2];
-    [self makeDigit:6 atX:2 y:2];
+      [self makeDigit:4 atX:0 y:2];
+      [self makeDigit:5 atX:1 y:2];
+      [self makeDigit:6 atX:2 y:2];
 
-    [self makeDigit:1 atX:0 y:3];
-    [self makeDigit:2 atX:1 y:3];
-    [self makeDigit:3 atX:2 y:3];
+      [self makeDigit:1 atX:0 y:3];
+      [self makeDigit:2 atX:1 y:3];
+      [self makeDigit:3 atX:2 y:3];
 
-    [[self makeDigit:0 atX:0 y:4] setFrameSize:CPSizeMake(85, 24)];
-    _dot = [self makeButton:"." atX:2 y:4 action:@selector(dot:)];
-    [[self makeButton:"=" atX:3 y:4 action:@selector(compute:)] setDefaultButton:YES];
+      [[self makeDigit:0 atX:0 y:4] setFrameSize:CPSizeMake(85, 24)];
+      _dot = [self makeButton:"." atX:2 y:4 action:@selector(dot:)];
+      [[self makeButton:"=" atX:3 y:4 action:@selector(compute:)] setDefaultButton:YES];
 
-    [self reset];
+      [self reset];
   }
 
   return self;
