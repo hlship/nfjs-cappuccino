@@ -14,5 +14,7 @@
 
 function main(args, namedArgs)
 {
-    CPApplicationMain(args, namedArgs);
+   CPLogRegister(CPLogConsole);
+   
+   CPApplicationMain(args, namedArgs);
 }
