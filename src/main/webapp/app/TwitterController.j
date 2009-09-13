@@ -9,6 +9,7 @@
 {
   CPPanel _panel;
   CPTextField _field;
+  CPScollView _scrollView;
   CPCollectionView _timelineView;
 }
 
@@ -35,15 +36,14 @@
   [_field setAction:@selector(startSearch:)];
   [_field setAutoresizingMask:CPViewWidthSizable];
   
-  var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(3, 40,
+  _scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(3, 40,
                 CGRectGetWidth([content bounds]) - 10, 
                 CGRectGetHeight([content bounds]) - 50)];
   
-  [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];    
-  [scrollView setAutohidesScrollers:YES];
-  [scrollView setBackgroundColor:[CPColor greenColor]]; // TEMP
+  [_scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];    
+  [_scrollView setAutohidesScrollers:YES];
 
-  var scrollViewBounds = [[scrollView contentView] bounds];
+  var scrollViewBounds = [[_scrollView contentView] bounds];
 
   var itemPrototype = [[CPCollectionViewItem alloc] init]; 
   [itemPrototype setView:[[TwitView alloc] initWithFrame:CGRectMakeZero()]];
@@ -53,20 +53,38 @@
   [_timelineView setItemPrototype:itemPrototype];
   [_timelineView setDelegate:self];
   [_timelineView setMaxNumberOfColumns:1];
-  
-  [_timelineView setBackgroundColor:[CPColor darkGrayColor]]; // TEMP
-  
-  [_timelineView setMinItemSize:CGSizeMake(100, 60)];
-  [_timelineView setMaxItemSize:CGSizeMake(1000, 60)];
+    
   [_timelineView setAutoresizingMask:CPViewWidthSizable];
+    
+  [_scrollView setDocumentView:_timelineView];
   
-  [scrollView setDocumentView:_timelineView];
+  [[CPNotificationCenter defaultCenter] 
+    addObserver:self 
+    selector:@selector(scrollViewDidResize:)
+    name:CPViewFrameDidChangeNotification 
+    object:_scrollView];
+
+  // Will fire an initial notification because the value changed.
+  [_scrollView setPostsFrameChangedNotifications:YES];
   
   [content addSubview:label];
   [content addSubview:_field];
-  [content addSubview:scrollView];
+  [content addSubview:_scrollView];
+    
     
   return self;
+}
+
+- (void)scrollViewDidResize:(id)notification
+{
+  var bounds = [_scrollView bounds];
+      
+  CPLog.debug("new size: " + CPRectGetWidth(bounds) + " x " + CPRectGetHeight(bounds));    
+      
+  var newSize = CGSizeMake(CPRectGetWidth(bounds), 60);
+  
+  [_timelineView setMinItemSize:newSize];
+  [_timelineView setMaxItemSize:newSize];
 }
 
 - (void)show
@@ -97,6 +115,11 @@
 - (void)connection:(CPURLConnection)connection didFailWithError:(CPString)error
 {
   CPLog.error(error);
+}
+
+- (void)adjustTimelineSize
+{
+  
 }
 
 @end
