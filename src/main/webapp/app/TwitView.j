@@ -15,6 +15,7 @@
   [_label setTextColor:[CPColor whiteColor]];
   [_label setAutoresizingMask:CPViewWidthSizable];
   [_label setLineBreakMode:CPLineBreakByWordWrapping];
+  [_label setBackgroundColor:[CPColor blueColor]];
   
   [self addSubview:_label]; 
   
@@ -23,8 +24,6 @@
 
 - (void)setRepresentedObject:(JSONObject)obj
 {
-  CPLog.debug(obj.text);
-  
   [_label setStringValue:obj.text];
 }
 

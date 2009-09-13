@@ -94,6 +94,8 @@
     
     [container addSubview:view];    
   }  
+  
+  [container setBounds:CGRectMake(0, 0, width + 4, 64 * count)];
 }
 
 
