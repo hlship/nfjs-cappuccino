@@ -10,7 +10,6 @@
   CPPanel _panel;
   CPTextField _field;
   CPScollView _scrollView;
-  CPCollectionView _timelineView;
 }
 
 - (id)init
@@ -42,28 +41,7 @@
   
   [_scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];    
   [_scrollView setAutohidesScrollers:YES];
-
-  var scrollViewBounds = [[_scrollView contentView] bounds];
-
-  var itemPrototype = [[CPCollectionViewItem alloc] init]; 
-  [itemPrototype setView:[[TwitView alloc] initWithFrame:CGRectMakeZero()]];
-
-  _timelineView = [[CPCollectionView alloc] initWithFrame:CGRectMake(0, 0, 
-    CGRectGetWidth(scrollViewBounds), 60)];
-  [_timelineView setItemPrototype:itemPrototype];
-  [_timelineView setDelegate:self];
-  [_timelineView setMaxNumberOfColumns:1];
-    
-  [_timelineView setAutoresizingMask:CPViewWidthSizable];
-    
-  [_scrollView setDocumentView:_timelineView];
   
-  [[CPNotificationCenter defaultCenter] 
-    addObserver:self 
-    selector:@selector(scrollViewDidResize:)
-    name:CPViewFrameDidChangeNotification 
-    object:_scrollView];
-
   // Will fire an initial notification because the value changed.
   [_scrollView setPostsFrameChangedNotifications:YES];
   
@@ -74,19 +52,6 @@
     
   return self;
 }
-
-- (void)scrollViewDidResize:(id)notification
-{
-  var bounds = [_scrollView bounds];
-      
-  CPLog.debug("new size: " + CPRectGetWidth(bounds) + " x " + CPRectGetHeight(bounds));    
-      
-  var newSize = CGSizeMake(CPRectGetWidth(bounds), 60);
-  
-  [_timelineView setMinItemSize:newSize];
-  [_timelineView setMaxItemSize:newSize];
-}
-
 - (void)show
 {
   [_panel orderFront:self];
@@ -108,18 +73,33 @@
 {
   var timeline = JSON.parse(data);
   
-  [_timelineView setContent:timeline];
+  [self updateTimeline:timeline];
+}  
+
+- (void)updateTimeline:(CPArray) timeline
+{  
+  var width = CPRectGetWidth([_scrollView bounds]) - 4;
+  var container = [_scrollView contentView];
+  
+  var count = [timeline count];
+
+  CPLog.debug("updateTimeline: " + count + " rows")
+
+  for (row = 0; row < count; row++)
+  {
+    var frame = CGRectMake(2, 64 * row + 2, width, 60);
+    var view = [[TwitView alloc] initWithFrame:frame];
+    [view setRepresentedObject:[timeline objectAtIndex:row]];
+    [view setAutoresizingMask:CPViewWidthSizable];
+    
+    [container addSubview:view];    
+  }  
 }
 
 
 - (void)connection:(CPURLConnection)connection didFailWithError:(CPString)error
 {
   CPLog.error(error);
-}
-
-- (void)adjustTimelineSize
-{
-  
 }
 
 @end

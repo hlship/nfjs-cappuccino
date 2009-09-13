@@ -6,29 +6,26 @@
   CPTextField _label;
 }
 
-- (void) setRepresentedObject:(JSONObject)obj
+- (id)initWithFrame:(CGRect)frame
 {
-  if (!_label)
-  {
-    _label = [[CPTextField alloc] initWithFrame:CGRectMakeZero()];
-    [_label setFont:[CPFont systemFontOfSize:12]];
-    [_label setTextColor:[CPColor whiteColor]];
-    [_label setAutoresizingMask:CPViewWidthSizable];
-    [self addSubview:_label];
-  }
-  
-  [_label setStringValue:obj.text];
-
-  [_label setFrameSize:CGSizeMake(200, 60)];
-  
+  self = [super initWithFrame:frame];
+ 
+   _label = [[CPTextField alloc] initWithFrame:frame];
+  [_label setFont:[CPFont systemFontOfSize:12]];
+  [_label setTextColor:[CPColor whiteColor]];
+  [_label setAutoresizingMask:CPViewWidthSizable];
   [_label setLineBreakMode:CPLineBreakByWordWrapping];
+  
+  [self addSubview:_label]; 
+  
+  return self;
 }
 
-- (void)setSelected:(BOOL)isSelected
+- (void)setRepresentedObject:(JSONObject)obj
 {
-  var color = isSelected ? [CPColor blueColor] :nil;
-
-  [self setBackgroundColor:color];
+  CPLog.debug(obj.text);
+  
+  [_label setStringValue:obj.text];
 }
 
 @end
