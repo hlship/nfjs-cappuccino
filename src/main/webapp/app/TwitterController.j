@@ -10,7 +10,7 @@
   CPPanel _panel;
   CPTextField _field;
   CPScollView _scrollView;
-  CPView _timelineView;
+  CPCollectionView _timelineView;
 }
 
 - (id)init
@@ -43,8 +43,12 @@
   [_scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];    
   [_scrollView setAutohidesScrollers:YES];
   
-  _timelineView = [[CPView alloc] init];
+  var itemPrototype = [[CPCollectionViewItem alloc] init];
+  [itemPrototype setView:[[TwitView alloc] initWithFrame:CGRectMake(0, 0, 200, 60)]];
+
+  _timelineView = [[CPCollectionView alloc] init];
   [_timelineView setAutoresizingMask:CPViewWidthSizable];
+  [_timelineView setItemPrototype:itemPrototype];  
   
   [_scrollView setDocumentView:_timelineView];
     
@@ -81,20 +85,7 @@
 
 - (void)updateTimeline:(CPArray) timeline
 {  
-  var width = CPRectGetWidth([_timelineView bounds]) - 4;
-  
-  var count = [timeline count];
-
-  for (row = 0; row < count; row++)
-  {
-    var frame = CGRectMake(2, 64 * row + 2, width, 60);
-    var view = [[TwitView alloc] initWithFrame:frame forStatus:[timeline objectAtIndex:row]];
-    [view setAutoresizingMask:CPViewWidthSizable];
-    
-    [_timelineView addSubview:view];    
-  }  
-    
-  [_timelineView setFrameSize:CGSizeMake(width + 4, 64 * count + 2)];
+  [_timelineView setContent:timeline];
 }
 
 
