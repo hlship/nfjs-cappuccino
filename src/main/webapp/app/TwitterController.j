@@ -49,7 +49,7 @@
   [itemPrototype setView:[[TwitView alloc] initWithFrame:CGRectMakeZero()]];
 
   _timelineView = [[CPCollectionView alloc] initWithFrame:CGRectMake(0, 0, 
-    CGRectGetWidth(scrollViewBounds), 60)];
+    CGRectGetWidth(scrollViewBounds), 0)];
   [_timelineView setItemPrototype:itemPrototype];
   [_timelineView setDelegate:self];
   [_timelineView setMaxNumberOfColumns:1];
@@ -58,33 +58,15 @@
     
   [_scrollView setDocumentView:_timelineView];
   
-  [[CPNotificationCenter defaultCenter] 
-    addObserver:self 
-    selector:@selector(scrollViewDidResize:)
-    name:CPViewFrameDidChangeNotification 
-    object:_scrollView];
-
-  // Will fire an initial notification because the value changed.
-  [_scrollView setPostsFrameChangedNotifications:YES];
-  
   [content addSubview:label];
   [content addSubview:_field];
   [content addSubview:_scrollView];
     
+  [_timelineView setMinItemSize:CGSizeMake(200, 50)];
+  [_timelineView setMaxItemSize:CGSizeMake(100000, 50)];
+
     
   return self;
-}
-
-- (void)scrollViewDidResize:(id)notification
-{
-  var bounds = [_scrollView bounds];
-      
-  CPLog.debug("new size: " + CPRectGetWidth(bounds) + " x " + CPRectGetHeight(bounds));    
-      
-  var newSize = CGSizeMake(CPRectGetWidth(bounds), 60);
-  
-  [_timelineView setMinItemSize:newSize];
-  [_timelineView setMaxItemSize:newSize];
 }
 
 - (void)show
@@ -115,11 +97,6 @@
 - (void)connection:(CPURLConnection)connection didFailWithError:(CPString)error
 {
   CPLog.error(error);
-}
-
-- (void)adjustTimelineSize
-{
-  
 }
 
 @end
