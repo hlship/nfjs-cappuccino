@@ -6,7 +6,7 @@
   CPTextField _label;
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame forStatus:(JSONObject)obj
 {
   self = [super initWithFrame:frame];
  
@@ -19,12 +19,9 @@
   
   [self addSubview:_label]; 
   
-  return self;
-}
-
-- (void)setRepresentedObject:(JSONObject)obj
-{
   [_label setStringValue:obj.text];
+
+  return self;
 }
 
 @end

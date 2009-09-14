@@ -63,7 +63,7 @@
   // Simulate the call to twitter.com, using a cached copy of the response.
   // Because of single-source policy, we'll need to implement a servlet at /twitter
   // than can get the content from the real site and pass it to the browser.
-  var url = "twitter/statuses/user_timeline/" + [_field stringValue] + ".json";
+  var url = "twitter/statuses/friends_timeline/" + [_field stringValue] + ".json";
   
   var request = [CPURLRequest requestWithURL:url];
   [CPURLConnection connectionWithRequest:request delegate:self];
@@ -88,14 +88,15 @@
   for (row = 0; row < count; row++)
   {
     var frame = CGRectMake(2, 64 * row + 2, width, 60);
-    var view = [[TwitView alloc] initWithFrame:frame];
-    [view setRepresentedObject:[timeline objectAtIndex:row]];
+    var view = [[TwitView alloc] initWithFrame:frame forStatus:[timeline objectAtIndex:row]];
     [view setAutoresizingMask:CPViewWidthSizable];
     
     [container addSubview:view];    
   }  
   
-  [container setBounds:CGRectMake(0, 0, width + 4, 64 * count)];
+  CPLog.debug("count: " + [[container subviews] count]);
+  
+  [container setFrameSize:CGSizeMake(width + 4, 64 * count + 2)];
 }
 
 
