@@ -46,7 +46,7 @@
   var scrollViewBounds = [[_scrollView contentView] bounds];
 
   var itemPrototype = [[CPCollectionViewItem alloc] init]; 
-  [itemPrototype setView:[[TwitView alloc] initWithFrame:CGRectMakeZero()]];
+  [itemPrototype setView:[[TwitView alloc] init]];
 
   _timelineView = [[CPCollectionView alloc] initWithFrame:CGRectMake(0, 0, 
     CGRectGetWidth(scrollViewBounds) - 2, 0)];
@@ -89,14 +89,8 @@
 {
   var timeline = JSON.parse(data);
   
-  [self updateTimeline:timeline];
-}  
-
-- (void)updateTimeline:(CPArray) timeline
-{  
   [_timelineView setContent:timeline];
-}
-
+}  
 
 - (void)connection:(CPURLConnection)connection didFailWithError:(CPString)error
 {
