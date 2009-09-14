@@ -10,6 +10,7 @@
   CPPanel _panel;
   CPTextField _field;
   CPScollView _scrollView;
+  CPView _timelineView;
 }
 
 - (id)init
@@ -42,9 +43,11 @@
   [_scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];    
   [_scrollView setAutohidesScrollers:YES];
   
-  // Will fire an initial notification because the value changed.
-  [_scrollView setPostsFrameChangedNotifications:YES];
+  _timelineView = [[CPView alloc] init];
+  [_timelineView setAutoresizingMask:CPViewWidthSizable];
   
+  [_scrollView setDocumentView:_timelineView];
+    
   [content addSubview:label];
   [content addSubview:_field];
   [content addSubview:_scrollView];
@@ -78,12 +81,9 @@
 
 - (void)updateTimeline:(CPArray) timeline
 {  
-  var width = CPRectGetWidth([_scrollView bounds]) - 4;
-  var container = [_scrollView contentView];
+  var width = CPRectGetWidth([_timelineView bounds]) - 4;
   
   var count = [timeline count];
-
-  CPLog.debug("updateTimeline: " + count + " rows")
 
   for (row = 0; row < count; row++)
   {
@@ -91,12 +91,10 @@
     var view = [[TwitView alloc] initWithFrame:frame forStatus:[timeline objectAtIndex:row]];
     [view setAutoresizingMask:CPViewWidthSizable];
     
-    [container addSubview:view];    
+    [_timelineView addSubview:view];    
   }  
-  
-  CPLog.debug("count: " + [[container subviews] count]);
-  
-  [container setFrameSize:CGSizeMake(width + 4, 64 * count + 2)];
+    
+  [_timelineView setFrameSize:CGSizeMake(width + 4, 64 * count + 2)];
 }
 
 
