@@ -49,7 +49,7 @@
   [itemPrototype setView:[[TwitView alloc] initWithFrame:CGRectMakeZero()]];
 
   _timelineView = [[CPCollectionView alloc] initWithFrame:CGRectMake(0, 0, 
-    CGRectGetWidth(scrollViewBounds), 0)];
+    CGRectGetWidth(scrollViewBounds) - 2, 0)];
   [_timelineView setItemPrototype:itemPrototype];
   [_timelineView setDelegate:self];
   [_timelineView setMaxNumberOfColumns:1];
@@ -62,9 +62,8 @@
   [content addSubview:_field];
   [content addSubview:_scrollView];
     
-  [_timelineView setMinItemSize:CGSizeMake(200, 50)];
-  [_timelineView setMaxItemSize:CGSizeMake(100000, 50)];
-
+  [_timelineView setMinItemSize:CGSizeMake(200, 60)];
+  [_timelineView setMaxItemSize:CGSizeMake(100000, 60)];
     
   return self;
 }
@@ -80,7 +79,7 @@
   // Simulate the call to twitter.com, using a cached copy of the response.
   // Because of single-source policy, we'll need to implement a servlet at /twitter
   // than can get the content from the real site and pass it to the browser.
-  var url = "twitter/statuses/user_timeline/" + [_field stringValue] + ".json";
+  var url = "twitter/statuses/friends_timeline/" + [_field stringValue] + ".json";
   
   var request = [CPURLRequest requestWithURL:url];
   [CPURLConnection connectionWithRequest:request delegate:self];
@@ -90,6 +89,11 @@
 {
   var timeline = JSON.parse(data);
   
+  [self updateTimeline:timeline];
+}  
+
+- (void)updateTimeline:(CPArray) timeline
+{  
   [_timelineView setContent:timeline];
 }
 
