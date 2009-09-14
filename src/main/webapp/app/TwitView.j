@@ -3,23 +3,29 @@
 
 @implementation TwitView : CPView
 {
-  CPTextField _label;
 }
 
 - (id)initWithFrame:(CGRect)frame forStatus:(JSONObject)obj
 {
   self = [super initWithFrame:frame];
+  
+  [self setBackgroundColor:[CPColor colorWithHexString:"d2d2d2"]];
  
-   _label = [[CPTextField alloc] initWithFrame:frame];
-  [_label setFont:[CPFont systemFontOfSize:12]];
-  [_label setTextColor:[CPColor whiteColor]];
-  [_label setAutoresizingMask:CPViewWidthSizable];
-  [_label setLineBreakMode:CPLineBreakByWordWrapping];
-  [_label setBackgroundColor:[CPColor blueColor]];
+  var imageView = [[CPImageView alloc] initWithFrame:CGRectMake(2, 2, 55, 55)];
+  [imageView setHasShadow:YES];
+  [imageView setImage:[[CPImage alloc] initByReferencingFile:obj.user.profile_image_url size:CPSizeMake(55, 55)]];
   
-  [self addSubview:_label]; 
+  [self addSubview:imageView];
+ 
+  var label = [[CPTextField alloc] initWithFrame:CPRectMake(57, 0, CPRectGetWidth(frame) - 57, CPRectGetHeight(frame))];
+  [label setFont:[CPFont systemFontOfSize:12]];
+  [label setTextColor:[CPColor blackColor]];
+  [label setAutoresizingMask:CPViewWidthSizable];
+  [label setLineBreakMode:CPLineBreakByWordWrapping];
+    
+  [self addSubview:label]; 
   
-  [_label setStringValue:obj.text];
+  [label setStringValue:obj.text];
 
   return self;
 }
